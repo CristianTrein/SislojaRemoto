@@ -1,0 +1,172 @@
+object FrmCartao: TFrmCartao
+  Left = 305
+  Top = 103
+  BorderStyle = bsNone
+  Caption = 'Cart'#227'o'
+  ClientHeight = 466
+  ClientWidth = 683
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object DBGrid1: TDBGrid
+    Left = 8
+    Top = 64
+    Width = 665
+    Height = 329
+    DataSource = IBDM.DTSCartao
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'CONTROLE'
+        Title.Caption = 'Controle'
+        Width = 45
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DATA'
+        Title.Caption = 'Data'
+        Width = 82
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DATACREDITO'
+        Title.Caption = 'DataCredito'
+        Width = 91
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NOME'
+        Title.Caption = 'Nome'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'VALOR'
+        Title.Caption = 'Valor R$'
+        Width = 60
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NUMCARTAO'
+        Title.Caption = 'NumCart'#227'o'
+        Width = 108
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'VALIDADE'
+        Title.Caption = 'Validade'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PARCELAS'
+        Title.Caption = 'Parcelas'
+        Visible = True
+      end>
+  end
+  object DBNavigator1: TDBNavigator
+    Left = 8
+    Top = 400
+    Width = 224
+    Height = 25
+    DataSource = IBDM.DTSCartao
+    VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+    Flat = True
+    TabOrder = 1
+  end
+  object BitBtn1: TBitBtn
+    Left = 248
+    Top = 400
+    Width = 75
+    Height = 25
+    Caption = 'Novo'
+    TabOrder = 2
+    OnClick = BitBtn1Click
+    Glyph.Data = {
+      F6000000424DF600000000000000760000002800000010000000100000000100
+      04000000000080000000CE0E0000C40E00001000000000000000000000000000
+      80000080000000808000800000008000800080800000C0C0C000808080000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00999999999999
+      999999000000000000999987777777777099998FFFFFFFFF7099998FFFFFFFFF
+      7099998FFFFFFFFF7099998FFFFFFFFF7099998FFFFFFFFF7099998FFFFFFFFF
+      7099998FFFFFFFFF7099998FFFFFFFFF7099998FFFFFFF000099998FFFFFFF7F
+      8999998FFFFFFF78999999888888888999999999999999999999}
+  end
+  object BitBtn2: TBitBtn
+    Left = 336
+    Top = 400
+    Width = 75
+    Height = 25
+    Caption = 'Editar'
+    TabOrder = 3
+    OnClick = BitBtn2Click
+    Glyph.Data = {
+      EE000000424DEE000000000000007600000028000000100000000F0000000100
+      04000000000078000000CE0E0000C40E00001000000000000000000000000000
+      80000080000000808000800000008000800080800000C0C0C000808080000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00777070707077
+      7777777777777007777777777777730077777777777773B807770000000003B7
+      08778FFFFFFFFF3B80778F8F88F88F3B70878FFFFFFFFFF3B8078F88F888F883
+      B0088FFFFFFFFFFF11108F888F88FFFF11078FFFFFFFFFFF0777C44444444444
+      4777C444444444444777CCCCCCCCCCCC4777}
+  end
+  object BitBtn3: TBitBtn
+    Left = 424
+    Top = 400
+    Width = 75
+    Height = 25
+    Caption = 'Excluir'
+    TabOrder = 4
+    OnClick = BitBtn3Click
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000120B0000120B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333000000000
+      3333333777777777F3333330F777777033333337F3F3F3F7F3333330F0808070
+      33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+      33333337F7F7F7F7F3333330F080707033333337F7F7F7F7F3333330F0808070
+      333333F7F7F7F7F7F3F33030F080707030333737F7F7F7F7F7333300F0808070
+      03333377F7F7F7F773333330F080707033333337F7F7F7F7F333333070707070
+      33333337F7F7F7F7FF3333000000000003333377777777777F33330F88877777
+      0333337FFFFFFFFF7F3333000000000003333377777777777333333330777033
+      3333333337FFF7F3333333333000003333333333377777333333}
+    NumGlyphs = 2
+  end
+  object BitBtn4: TBitBtn
+    Left = 600
+    Top = 438
+    Width = 75
+    Height = 25
+    Caption = 'Fechar'
+    TabOrder = 5
+    OnClick = BitBtn4Click
+    Glyph.Data = {
+      F6000000424DF600000000000000760000002800000010000000100000000100
+      04000000000080000000CE0E0000C40E00001000000000000000000000000000
+      80000080000000808000800000008000800080800000C0C0C000808080000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0077FF77FF700F
+      77FFFF77FF77F0B0FF7777FF77FF70B307FF00000007F0B330007777770000B3
+      307777770708800330777770070880F030777702070880033077702A000000B3
+      307702AAAAAAA0B3307770AA000000B33077770A070880B330777770070880BB
+      307777770708880BB077777777088880B0777777770000000077}
+  end
+end

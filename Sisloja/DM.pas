@@ -1,0 +1,696 @@
+unit DM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Db, IBCustomDataSet, IBQuery, IBDatabase, IBSQL,inifiles, IBTable,
+  DBTables;
+
+type
+  TIBDM = class(TDataModule)
+    IBDB: TIBDatabase;
+    IBTr: TIBTransaction;
+    IBQClientes: TIBQuery;
+    DTSClientes: TDataSource;
+    DTSFor: TDataSource;
+    IBQFor: TIBQuery;
+    IBQProdutos: TIBQuery;
+    DTSProdutos: TDataSource;
+    DTSCaixa: TDataSource;
+    IBQCaixa: TIBQuery;
+    IBQCreceber: TIBQuery;
+    DTSCreceber: TDataSource;
+    DTSDoctos: TDataSource;
+    IBQDoctos: TIBQuery;
+    IBQEtiquetas: TIBQuery;
+    DTSEtiquetas: TDataSource;
+    DTSInventario: TDataSource;
+    DTSMovimento: TDataSource;
+    IBQInventario: TIBQuery;
+    IBQMovimento: TIBQuery;
+    IBQParam: TIBQuery;
+    DTSParam: TDataSource;
+    DTSUsuario: TDataSource;
+    DTSIcms: TDataSource;
+    IBQUsuario: TIBQuery;
+    IBQIcms: TIBQuery;
+    IBQGrupos: TIBQuery;
+    DTSGrupos: TDataSource;
+    DTSSubGrupos: TDataSource;
+    DTSTrCaixa: TDataSource;
+    DTSPosCaixa: TDataSource;
+    IBQSubGrupos: TIBQuery;
+    IBQTrCaixa: TIBQuery;
+    IBQPosCaixa: TIBQuery;
+    IBQCrecebidas: TIBQuery;
+    IBQCpagas: TIBQuery;
+    DTSCrecebidas: TDataSource;
+    DTSCpagas: TDataSource;
+    DTSCpagar: TDataSource;
+    DTSComissoes: TDataSource;
+    IBQCpagar: TIBQuery;
+    IBQComissoes: TIBQuery;
+    IBQClasTrib: TIBQuery;
+    DTSClasTrib: TDataSource;
+    Grava: TIBSQL;
+    Cheka: TIBSQL;
+    IBSQLGrava: TIBSQL;
+    IBQProdutosCODIGO: TIBStringField;
+    IBQProdutosDESCRICAO: TIBStringField;
+    IBQProdutosUNIMED: TIBStringField;
+    IBQProdutosGRUPO: TIntegerField;
+    IBQProdutosSUBGRUPO: TIntegerField;
+    IBQProdutosOBS: TIBStringField;
+    IBQProdutosESTMINIMO: TIBBCDField;
+    IBQProdutosESTOQUE: TIBBCDField;
+    IBQProdutosPRECOCUSTO: TIBBCDField;
+    IBQProdutosPRECOVENDA: TIBBCDField;
+    IBQProdutosCUSTOMEDIO: TIBBCDField;
+    IBQProdutosUREAJUSTE: TDateTimeField;
+    IBQProdutosIPI: TIBBCDField;
+    IBQProdutosICMS: TIBBCDField;
+    IBQProdutosBASECALCULO: TIBBCDField;
+    IBQProdutosSTRIBU: TIBStringField;
+    IBQProdutosCADASTRO: TDateTimeField;
+    IBQEtiquetasCODIGO: TIBStringField;
+    IBQEtiquetasPRODUTO: TIBStringField;
+    IBQEtiquetasPRECOVENDA: TIBBCDField;
+    IBQCpagasCONTROLE: TIntegerField;
+    IBQCpagasVENCIMENTO: TDateTimeField;
+    IBQCpagasPAGAMENTO: TDateTimeField;
+    IBQCpagasDOCUMENTO: TIBStringField;
+    IBQCpagasHISTORICO: TIBStringField;
+    IBQCpagasVALOR: TIBBCDField;
+    IBQCpagasPAGO: TIBBCDField;
+    IBQCpagasPARCELA: TIBStringField;
+    IBQCpagasFORNECEDOR: TIntegerField;
+    IBQTrCaixaCODIGO: TIntegerField;
+    IBQTrCaixaDESCRICAO: TIBStringField;
+    IBQTrCaixaOPERACAO: TIBStringField;
+    IBQCpagarCONTROLE: TIntegerField;
+    IBQCpagarVENCIMENTO: TDateTimeField;
+    IBQCpagarDOCUMENTO: TIBStringField;
+    IBQCpagarHISTORICO: TIBStringField;
+    IBQCpagarVALOR: TIBBCDField;
+    IBQCpagarPARCELA: TIBStringField;
+    IBQCpagarFORNECEDOR: TIntegerField;
+    IBQClasTribCODIGO: TIBStringField;
+    IBQClasTribDESCRICAO: TIBStringField;
+    IBQCreceberCONTROLE: TIntegerField;
+    IBQCreceberVENCIMENTO: TDateTimeField;
+    IBQCreceberDOCUMENTO: TIBStringField;
+    IBQCreceberHISTORICO: TIBStringField;
+    IBQCreceberVALORORIGINAL: TIBBCDField;
+    IBQCreceberVALORDEVIDO: TIBBCDField;
+    IBQCreceberTOTALPAGO: TIBBCDField;
+    IBQCreceberPARCELA: TIBStringField;
+    IBQCreceberCLIENTE: TIntegerField;
+    Deleta: TIBSQL;
+    IBQComissoesNOTA: TIntegerField;
+    IBQComissoesVENDEDOR: TIntegerField;
+    IBQComissoesCOMISSAO: TIBBCDField;
+    IBQComissoesLIBERADO: TDateTimeField;
+    IBQComissoesPAGO: TDateTimeField;
+    IBQIcmsCODIGO: TIntegerField;
+    IBQIcmsALIQUOTA: TIBStringField;
+    IBQuery1: TIBQuery;
+    DataSource1: TDataSource;
+    IBQProdutosLOCAL: TIBStringField;
+    DTSEstrutura: TDataSource;
+    IBQEstrutura: TIBQuery;
+    IBQEstruturaPRODUTO: TIBStringField;
+    IBQEstruturaCOMPONENTE: TIBStringField;
+    IBQEstruturaSEQ: TIntegerField;
+    IBQEstruturaQUANTIDADE: TIBBCDField;
+    IBQEstruturaPROCESSO: TIBStringField;
+    IBQEntradas: TIBQuery;
+    DTSEntradas: TDataSource;
+    DTSSaida: TDataSource;
+    IBQSaida: TIBQuery;
+    IBQMovimentoCONTROLE: TIntegerField;
+    IBQMovimentoPRODUTO: TIBStringField;
+    IBQMovimentoDATA: TDateTimeField;
+    IBQMovimentoDOCTO: TIBStringField;
+    IBQMovimentoT: TIBStringField;
+    IBQMovimentoQUANTIDADE: TIBBCDField;
+    IBQMovimentoVALORUNITARIO: TIBBCDField;
+    IBQMovimentoVALORICMS: TIBBCDField;
+    IBQMovimentoVALORIPI: TIBBCDField;
+    IBQMovimentoCONTDOC: TIntegerField;
+    IBRel: TIBQuery;
+    DtsREl: TDataSource;
+    IBRelGRUPO: TIntegerField;
+    IBRelCODIGO: TIntegerField;
+    IBRelDESCRICAO: TIBStringField;
+    IBQSubGruposCODIGO: TIntegerField;
+    IBQSubGruposGRUPO: TIntegerField;
+    IBQSubGruposDESCRICAO: TIBStringField;
+    IBQInventarioDATA: TDateTimeField;
+    IBQInventarioPRODUTO: TIBStringField;
+    IBQInventarioQUANTIDADE: TIBBCDField;
+    IBQInventarioVALOR: TIBBCDField;
+    Consulta: TIBQuery;
+    IBQTipoServ: TIBQuery;
+    DTSTipoServ: TDataSource;
+    IBQTipoServCODIGO: TIBStringField;
+    IBQTipoServDESCRICAO: TIBStringField;
+    IBQTipoServVALOR: TIBBCDField;
+    DTSOrdemServ: TDataSource;
+    IBQOrdemServ: TIBQuery;
+    IBQOrdemServNR: TIntegerField;
+    IBQOrdemServDATA: TDateTimeField;
+    IBQOrdemServCLIENTE: TIntegerField;
+    IBQOrdemServEQUIPAMENTO: TIBStringField;
+    IBQOrdemServCARACTERISTICA: TIBStringField;
+    IBQOrdemServATENDIMENTO: TIBStringField;
+    IBQOrdemServVALORSERV: TIBBCDField;
+    IBQOrdemServVALORPECA: TIBBCDField;
+    DTSItos: TDataSource;
+    IBQItos: TIBQuery;
+    IBQItosSEQUENCIAL: TIntegerField;
+    IBQItosCODSERV: TIBStringField;
+    IBQItosDESCRICAO: TIBStringField;
+    IBQItosPECAS: TIntegerField;
+    IBQItosVALOR: TIBBCDField;
+    IBQItosDATACONCL: TDateTimeField;
+    IBQItosQUANTIDADE: TIBBCDField;
+    IBQPosCaixaDATA: TDateTimeField;
+    IBQPosCaixaSALDO: TIBBCDField;
+    IBQPosCaixaOPERADOR: TIntegerField;
+    DTSTemp: TDataSource;
+    IBTemp: TIBTable;
+    IBTempCODIGO: TIBStringField;
+    IBTempDESCRICAO: TIBStringField;
+    IBTempSITTRIB: TIBStringField;
+    IBTempUNID: TIBStringField;
+    IBTempQUANTIDADE: TIBBCDField;
+    IBTempALIQ: TIBStringField;
+    IBTempCONTADOR: TIntegerField;
+    IBTempVALORTOT: TIBBCDField;
+    IBTempVALORUNIT: TIBBCDField;
+    IBTempIPI: TIBStringField;
+    IBQGruposCODIGO: TIntegerField;
+    IBQGruposDESCRICAO: TIBStringField;
+    IBQGruposIPI: TIBBCDField;
+    IBQGruposICMS: TIBBCDField;
+    DTSEstados: TDataSource;
+    IBQEstados: TIBQuery;
+    IBQEstadosUF: TIBStringField;
+    IBQEstadosIPI: TIBBCDField;
+    IBQEstadosICMS: TIBBCDField;
+    DTSConvenio: TDataSource;
+    IBQConvenio: TIBQuery;
+    IBQConvenioCODIGO: TIntegerField;
+    IBQConvenioNOME: TIBStringField;
+    DTSCheque: TDataSource;
+    IBQCheque: TIBQuery;
+    IBQChequeCODIGO: TIntegerField;
+    IBQChequeEMITENTE: TIBStringField;
+    IBQChequeDOCUMENTO: TIBStringField;
+    IBQChequeENTRADA: TDateTimeField;
+    IBQChequeCLIENTE: TIntegerField;
+    IBQChequeVALOR: TIBBCDField;
+    IBQChequeNCHEQUE: TIBStringField;
+    IBQChequeBANCO: TIBStringField;
+    IBQChequeAGENCIA: TIBStringField;
+    IBQChequeDEPOSITAR: TDateTimeField;
+    IBQChequeLKCONTA: TIntegerField;
+    DTSCartao: TDataSource;
+    IBQCartao: TIBQuery;
+    IBQCartaoCONTROLE: TIntegerField;
+    IBQCartaoDATA: TDateTimeField;
+    IBQCartaoDATACREDITO: TDateTimeField;
+    IBQCartaoVALOR: TIBBCDField;
+    IBQCartaoNUMCARTAO: TIBStringField;
+    IBQCartaoVALIDADE: TIBStringField;
+    IBQCartaoNOME: TIBStringField;
+    IBQCartaoPARCELAS: TIntegerField;
+    DTSCheque1: TDataSource;
+    IBQCheque1: TIBQuery;
+    IntegerField1: TIntegerField;
+    IBStringField1: TIBStringField;
+    IBStringField2: TIBStringField;
+    DateTimeField1: TDateTimeField;
+    IntegerField2: TIntegerField;
+    IBBCDField1: TIBBCDField;
+    IBStringField3: TIBStringField;
+    IBStringField4: TIBStringField;
+    IBStringField5: TIBStringField;
+    DateTimeField2: TDateTimeField;
+    IntegerField3: TIntegerField;
+    IBTPrecos: TIBTable;
+    IBTPrecosREF: TIntegerField;
+    IBTPrecosPRECO: TIBBCDField;
+    Dtsprecos: TDataSource;
+    Q1: TIBQuery;
+    IBQComissoesPARCELA: TIBStringField;
+    IBQForCODIGO: TIBStringField;
+    IBQForNOME: TIBStringField;
+    IBQForCONTATO: TIBStringField;
+    IBQForNASCIMENTO: TDateTimeField;
+    IBQForBAIRRO: TIBStringField;
+    IBQForCIDADE: TIBStringField;
+    IBQForCEP: TIBStringField;
+    IBQForUF: TIBStringField;
+    IBQForFONE: TIBStringField;
+    IBQForFAX: TIBStringField;
+    IBQForCELULAR: TIBStringField;
+    IBQForEMAIL: TIBStringField;
+    IBQForSITE: TIBStringField;
+    IBQForCNPJ: TIBStringField;
+    IBQForINSC: TIBStringField;
+    IBQForOBS: TIBStringField;
+    IBQForBANCO: TIBStringField;
+    IBQForAGENCIA: TIBStringField;
+    IBQForCONTA: TIBStringField;
+    IBQForCADASTRO: TDateTimeField;
+    IBQForENDERECO: TIBStringField;
+    IBQMovimentoCFOP: TIBStringField;
+    dtscd: TDataSource;
+    TBCD: TIBTable;
+    TBCDCONTROLE: TIntegerField;
+    TBCDACE: TIBStringField;
+    TBCDDATA: TDateTimeField;
+    TBCDCLIFOR: TIntegerField;
+    TBCDNOMECLI: TIBStringField;
+    TBCDOPERADOR: TIntegerField;
+    TBCDOPERADOR1: TIntegerField;
+    TBCDVALORTOTAL: TIBBCDField;
+    TBCDVALORLIQ: TIBBCDField;
+    TBCDVALORDEV: TIBBCDField;
+    TBCDDATAPRO: TDateTimeField;
+    TBCDHORAPRO: TIBStringField;
+    TBCDDATADEV: TDateTimeField;
+    TBCDHORADEV: TIBStringField;
+    TBCDDOCVENDA: TIBStringField;
+    TBCDOBS: TIBStringField;
+    TBICD: TIBTable;
+    dtsicd: TDataSource;
+    TBICDCONTROLE: TIntegerField;
+    TBICDSEQ: TIntegerField;
+    TBICDPRODUTO: TIBStringField;
+    TBICDDESCRICAO: TIBStringField;
+    TBICDSIT: TIBStringField;
+    TBICDDATA: TDateTimeField;
+    TBICDDOCTO: TIBStringField;
+    TBICDREF: TIntegerField;
+    TBICDQUANTIDADE: TIBBCDField;
+    TBICDVALORUNITARIO: TIBBCDField;
+    IBSQLGrava1: TIBSQL;
+    IBQCreceberPARCIAL: TIntegerField;
+    DTSobscli: TDataSource;
+    IBTobscli: TIBTable;
+    IBTobsclicliente: TIBStringField;
+    IBTobsclinarrativa: TBlobField;
+    IBQCreceberMPGTO: TIntegerField;
+    IBTmpgto: TIBTable;
+    DtsMpgto: TDataSource;
+    IBTmpgtoCODIGO: TIntegerField;
+    IBTmpgtoDESCRICAO: TIBStringField;
+    IBQDoctosCONTROLE: TIntegerField;
+    IBQDoctosDATA: TDateTimeField;
+    IBQDoctosDOCUMENTO: TIBStringField;
+    IBQDoctosTRANSACAO: TIBStringField;
+    IBQDoctosCLIFOR: TIntegerField;
+    IBQDoctosOPERADOR: TIntegerField;
+    IBQDoctosNATOP: TIBStringField;
+    IBQDoctosTRANSPORTADOR: TIntegerField;
+    IBQDoctosVALORTOTAL: TIBBCDField;
+    IBQDoctosVALORFRETE: TIBBCDField;
+    IBQDoctosVALORICMS: TIBBCDField;
+    IBQDoctosIMPRIMIR: TIBStringField;
+    IBQDoctosNOME: TIBStringField;
+    IBQDoctosNADIC: TIBStringField;
+    IBQDoctosVENDEDOR: TIntegerField;
+    IBQDoctosOBS: TIBStringField;
+    IBQCrecebero: TStringField;
+    ibq1: TIBQuery;
+    DtsCon: TDataSource;
+    Dtsibq1: TDataSource;
+    ibq2: TIBQuery;
+    Dtsibq2: TDataSource;
+    IBQDoctosCONDPAG: TIBStringField;
+    IBQMovimentoDESCRICAO: TIBStringField;
+    q2: TIBQuery;
+    IBQParamUSUARIO: TIBStringField;
+    IBQParamCNPJ: TIBStringField;
+    IBQParamINSC: TIBStringField;
+    IBQParamENDERECO: TIBStringField;
+    IBQParamBAIRRO: TIBStringField;
+    IBQParamCIDADE: TIBStringField;
+    IBQParamCEP: TIBStringField;
+    IBQParamUF: TIBStringField;
+    IBQParamFONE: TIBStringField;
+    IBQParamFAX: TIBStringField;
+    IBQParamEMAIL: TIBStringField;
+    IBQParamCODIGO: TIntegerField;
+    IBQParamDATALIC: TDateTimeField;
+    IBQParamUSAECF: TIBStringField;
+    IBQParamTXJUROS: TIBBCDField;
+    IBQParamUVE: TIBStringField;
+    IBQParamUCR: TIBStringField;
+    IBQParamUCL: TIBStringField;
+    IBQParamUCM: TIBStringField;
+    IBQParamUFO: TIBStringField;
+    IBQParamUES: TIBStringField;
+    IBQParamUCP: TIBStringField;
+    IBQParamUCX: TIBStringField;
+    IBQParamUMA: TIBStringField;
+    IBQParamPROXPROD: TIntegerField;
+    IBQParamPROXCLI: TIntegerField;
+    IBQParamPROXFOR: TIntegerField;
+    IBQParamBACKUP: TDateTimeField;
+    IBQParamUOS: TIBStringField;
+    IBQParamUSANF: TIBStringField;
+    IBQParamEST: TIBStringField;
+    IBQParamFINANC: TIBStringField;
+    IBQParamARQUIVO: TIBStringField;
+    IBQParamBLCADASTRO: TIBStringField;
+    IBQParamNRDIASBL: TIntegerField;
+    IBQParamLIMCFRED: TIBBCDField;
+    IBQParamCFOP: TIBStringField;
+    IBQParamCONTRATO: TBlobField;
+    IBQParamCARENCIA: TIntegerField;
+    IBQParamJURMO: TIBBCDField;
+    IBQParamDESCPR: TIBBCDField;
+    IBQParamDESCAV: TIBBCDField;
+    IBQParamTIMP: TIntegerField;
+    IBQParamVPROMO: TIBStringField;
+    Dtscx: TDataSource;
+    Qcaixa: TIBQuery;
+    QcaixaDATA: TDateTimeField;
+    QcaixaCONTROLE: TIntegerField;
+    QcaixaDOCUMENTO: TIBStringField;
+    QcaixaHISTORICO: TIBStringField;
+    QcaixaVALOR: TIBBCDField;
+    QcaixaOPERACAO: TIBStringField;
+    QcaixaTRANSACAO: TIntegerField;
+    QcaixaOPERADOR: TIntegerField;
+    QcaixaMPGTO: TIntegerField;
+    QcaixaPARCELA: TIBStringField;
+    QcaixaDTA: TDateField;
+    Qitvenda: TIBQuery;
+    DtsQitvenda: TDataSource;
+    QitvendaDATA: TDateTimeField;
+    QitvendaPRODUTO: TIBStringField;
+    QitvendaDESCRICAO: TIBStringField;
+    QitvendaQTD: TIBBCDField;
+    QitvendaVALOR: TIBBCDField;
+    IBQParamLISTA: TIntegerField;
+    IBTPrecosPRECO2: TIBBCDField;
+    IBQMovimentoREF: TIntegerField;
+    ibtLimpa: TIBTable;
+    DtsLimpa: TDataSource;
+    IBQavisos: TIBQuery;
+    Dtsavisos: TDataSource;
+    IBQavisosCONTROLE: TIntegerField;
+    IBQavisosAVISO1: TDateTimeField;
+    IBQavisosAVISO2: TDateTimeField;
+    IBQavisosAVISO3: TDateTimeField;
+    IBQavisosSPCENT: TDateTimeField;
+    IBQavisosSPCSAI: TDateTimeField;
+    IBQavisosOBS: TIBStringField;
+    IBQavisosMARCA1: TIBStringField;
+    IBQavisosMARCA2: TIBStringField;
+    IBQavisosMARCA3: TIBStringField;
+    IBQavisosMARCASPCE: TIBStringField;
+    IBQavisosMARCASPCS: TIBStringField;
+    IBQavisosCONTROLE1: TIntegerField;
+    IBQavisosVENCIMENTO: TDateTimeField;
+    IBQavisosDOCUMENTO: TIBStringField;
+    IBQavisosHISTORICO: TIBStringField;
+    IBQavisosVALORORIGINAL: TIBBCDField;
+    IBQavisosVALORDEVIDO: TIBBCDField;
+    IBQavisosTOTALPAGO: TIBBCDField;
+    IBQavisosPARCELA: TIBStringField;
+    IBQavisosCLIENTE: TIntegerField;
+    IBQavisosPARCIAL: TIntegerField;
+    IBQavisosOBS1: TIBStringField;
+    IBQavisosMPGTO: TIntegerField;
+    IBQCrecebidasCONTROLE: TIntegerField;
+    IBQCrecebidasVENCIMENTO: TDateTimeField;
+    IBQCrecebidasPAGAMENTO: TDateTimeField;
+    IBQCrecebidasDOCUMENTO: TIBStringField;
+    IBQCrecebidasHISTORICO: TIBStringField;
+    IBQCrecebidasVALOR: TIBBCDField;
+    IBQCrecebidasPAGO: TIBBCDField;
+    IBQCrecebidasPARCELA: TIBStringField;
+    IBQCrecebidasCLIENTE: TIntegerField;
+    IBQCrecebidasOBS: TIBStringField;
+    IBQCrecebidasRECEBEDOR: TIntegerField;
+    IBQCrecebidasMPGTO: TIntegerField;
+    DtsTempREc: TDataSource;
+    IBTTemprec: TIBTable;
+    IBTspcpesq: TIBTable;
+    IBTspcpesqCLIENTE: TIBStringField;
+    IBTspcpesqSEQ: TIntegerField;
+    IBTspcpesqDATA: TDateTimeField;
+    IBTspcpesqDESCRICAO: TIBStringField;
+    Dtsspcpesq: TDataSource;
+    IBQCrecebidasCONTDOC: TIntegerField;
+    Qcaixa1: TIBQuery;
+    DtsCaixa1: TDataSource;
+    IBQUsuarioCODIGO: TIntegerField;
+    IBQUsuarioNOME: TIBStringField;
+    IBQUsuarioSENHA: TIntegerField;
+    IBQUsuarioCOMISSAO: TIBBCDField;
+    IBQUsuarioSUPER: TIBStringField;
+    IBQUsuarioCOMISSAO1: TIBBCDField;
+    IBTTemprecCONTROLE: TIntegerField;
+    IBTTemprecVENCIMENTO: TDateTimeField;
+    IBTTemprecDOCUMENTO: TIBStringField;
+    IBTTemprecHISTORICO: TIBStringField;
+    IBTTemprecVALORORIGINAL: TIBBCDField;
+    IBTTemprecVALORDEVIDO: TIBBCDField;
+    IBTTemprecTOTALPAGO: TIBBCDField;
+    IBTTemprecPARCELA: TIBStringField;
+    IBTTemprecCLIENTE: TIBStringField;
+    IBTTemprecPARCIAL: TIntegerField;
+    IBTTemprecOBS: TIBStringField;
+    IBTTemprecMPGTO: TIntegerField;
+    IBTTemprecM: TIBStringField;
+    IBTTemprecPERC: TIBBCDField;
+    IBQCaixaDATA: TDateTimeField;
+    IBQCaixaCONTROLE: TIntegerField;
+    IBQCaixaDOCUMENTO: TIBStringField;
+    IBQCaixaHISTORICO: TIBStringField;
+    IBQCaixaVALOR: TIBBCDField;
+    IBQCaixaOPERACAO: TIBStringField;
+    IBQCaixaTRANSACAO: TIntegerField;
+    IBQCaixaOPERADOR: TIntegerField;
+    IBQCaixaMPGTO: TIntegerField;
+    IBQCaixaPARCELA: TIBStringField;
+    IBQCaixaCLIFOR: TIntegerField;
+    IBQParamchkprt1: TIntegerField;
+    IBQParamchkprt2: TIntegerField;
+    IBQParamVOZ: TIntegerField;
+    IBQParamPERCMAX: TIBBCDField;
+    IBQParamTMPINATIVO: TIntegerField;
+    IBQParamVARIAVEL: TIntegerField;
+    IBQCreceberOBS: TIBStringField;
+    IBQParamLEMBRETE: TBlobField;
+    IBQmovimento1: TIBQuery;
+    IBQmovimento1CONTROLE: TIntegerField;
+    IBQmovimento1PRODUTO: TIBStringField;
+    IBQmovimento1DATA: TDateTimeField;
+    IBQmovimento1DOCTO: TIBStringField;
+    IBQmovimento1T: TIBStringField;
+    IBQmovimento1QUANTIDADE: TIBBCDField;
+    IBQmovimento1VALORUNITARIO: TIBBCDField;
+    IBQmovimento1VALORICMS: TIBBCDField;
+    IBQmovimento1VALORIPI: TIBBCDField;
+    IBQmovimento1CONTDOC: TIntegerField;
+    IBQmovimento1CFOP: TIBStringField;
+    IBQmovimento1DESCRICAO: TIBStringField;
+    IBQmovimento1REF: TIntegerField;
+    Dtsmovimento1: TDataSource;
+    ibtLimpaCONTROLE: TIntegerField;
+    ibtLimpaDATA: TDateTimeField;
+    ibtLimpaDOCUMENTO: TIBStringField;
+    ibtLimpaCLIFOR: TIntegerField;
+    ibtLimpaNOME: TIBStringField;
+    ibtLimpaNADIC: TIBStringField;
+    ibtLimpaVENDEDOR: TIntegerField;
+    ibtLimpaOPERADOR: TIntegerField;
+    ibtLimpaVALORTOTAL: TIBBCDField;
+    ibtLimpaCONDPAG: TIBStringField;
+    ibtLimpaMARCA: TIBStringField;
+    ibtLimpaOBS: TIBStringField;
+    IBQClientesCODIGO: TIBStringField;
+    IBQClientesNOME: TIBStringField;
+    IBQClientesCONTATO: TIBStringField;
+    IBQClientesENDERECO: TIBStringField;
+    IBQClientesBAIRRO: TIBStringField;
+    IBQClientesPTOREF: TIBStringField;
+    IBQClientesTPORES: TIBStringField;
+    IBQClientesTMPRES: TIBStringField;
+    IBQClientesVLRALU: TIBBCDField;
+    IBQClientesCOMPRO: TIBStringField;
+    IBQClientesCIDADE: TIBStringField;
+    IBQClientesCEP: TIBStringField;
+    IBQClientesUF: TIBStringField;
+    IBQClientesFONE: TIBStringField;
+    IBQClientesFAX: TIBStringField;
+    IBQClientesCELULAR: TIBStringField;
+    IBQClientesEMAIL: TIBStringField;
+    IBQClientesTPCONTATO: TIBStringField;
+    IBQClientesREFCOMERCIAL: TIBStringField;
+    IBQClientesREFBANCARIA: TIBStringField;
+    IBQClientesRG: TIBStringField;
+    IBQClientesORGAOEXP: TIBStringField;
+    IBQClientesDATARG: TDateTimeField;
+    IBQClientesCPF: TIBStringField;
+    IBQClientesDTNASC: TDateTimeField;
+    IBQClientesCADASTRO: TDateTimeField;
+    IBQClientesEMPRESA: TIBStringField;
+    IBQClientesCARGO: TIBStringField;
+    IBQClientesSALARIO: TIBBCDField;
+    IBQClientesOUTREND: TIBBCDField;
+    IBQClientesENDEMP: TIBStringField;
+    IBQClientesCIDEMP: TIBStringField;
+    IBQClientesCEPEMP: TIBStringField;
+    IBQClientesUFEMP: TIBStringField;
+    IBQClientesCONJUGE: TIBStringField;
+    IBQClientesDTNCONJ: TDateTimeField;
+    IBQClientesCONVENIO: TIntegerField;
+    IBQClientesNPAI: TIBStringField;
+    IBQClientesNMAE: TIBStringField;
+    IBQClientesAUT1: TIBStringField;
+    IBQClientesAUT2: TIBStringField;
+    IBQClientesLIMCRED: TIBBCDField;
+    IBQClientesOBS: TIBStringField;
+    IBQClientesBL: TIBStringField;
+    IBQClientesNRDIASBL: TIntegerField;
+    IBQClientesFONEEMP: TIBStringField;
+    IBQClientesNRDIASATRAZO: TIntegerField;
+    IBQClientesCONJ_TRAB: TIBStringField;
+    IBQClientesNATURALID: TIBStringField;
+    IBQClientesCHEQUES: TIBStringField;
+    IBQClientesOBSBL: TIBStringField;
+    IBQClientesATUCAD: TDateTimeField;
+    procedure DataModuleCreate(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+      vvv2:boolean;
+      vcor:string;
+  end;
+
+var
+  IBDM: TIBDM;
+  vid:string;
+  TablePathName : string;
+  varquivo: string[50];
+  senha:string;
+
+   Function LeConfig : Boolean;
+  Procedure CommitWork;
+  Procedure CommitWork1;
+implementation
+
+
+
+{$R *.DFM}
+
+Function AcessaBanco: Boolean;
+
+begin
+  IF LeConfig() then
+        begin
+            try
+
+                ibdm.IBDB.Connected:=False;
+                ibdm.IBDB.DatabaseName := varquivo;
+                ibdm.IBDB.Params.Add('Password='+senha);
+                ibdm.IBDB.Connected:=True;
+                ibdm.IBTr.StartTransaction;
+                result:=True;
+              except
+                ShowMessage('Problemas na Conexão !');
+                result:=False;
+                Application.Terminate;
+          end;
+   {       try
+            ibdm.vvv2 := True;
+            ibdm.IBDB1.Connected := False;
+            ibdm.IBDB1.DatabaseName := 'c:\ti\sisloja\dados\2\ti_teste.gdb';
+            ibdm.IBDB1.connected := True;
+            ibdm.IBTr1.StartTransaction;
+            except
+            ibdm.vvv2 := False;
+          end;     }
+        end
+      else
+        begin
+                ShowMessage('Não existe o arquivo de banco de dados');
+                result:=False;
+                Application.Terminate;
+        end
+
+end;
+  Function LeConfig():Boolean ;
+    var
+      vinis: TIniFile ;
+      vaqui : string;
+
+   Begin
+    vaqui := GetCurrentDir;
+    vaqui := Trim(vaqui);
+    IF Fileexists(vaqui+'\SConfig.ini') then
+        Begin
+            vinis := TiniFile.create(vaqui+'\SConfig.ini');
+            With vinis do
+            Begin
+                varquivo:= ReadString('DADOS','DirTabela','');
+                vid:= ReadString('IDENTIFICACAO','ID','0');
+                senha:= ReadString('DADOS','Pwd','');
+                IBDM.vcor:= ReadString('DADOS','Cor','');
+                Free;
+                result := True
+           end;
+        end
+     Else
+       Begin
+           result := False;
+           ShowMessage('Não achado arquivo de configuração do Sistema');
+           Application.Terminate;
+       end;
+  end;
+
+
+
+
+Procedure CommitWork;
+begin
+        with  ibdm.IBSQLGrava do
+                begin
+                        close;
+                        execquery;
+                end;
+        ibdm.IBTr.StartTransaction;
+end;
+
+Procedure CommitWork1;
+begin
+{        with  ibdm.IBSQLGrava1 do
+                begin
+                        close;
+                        execquery;
+                end;
+        ibdm.IBTr1.StartTransaction;}
+end;
+
+
+procedure TIBDM.DataModuleCreate(Sender: TObject);
+begin
+   IF not Acessabanco() then
+       begin
+           ShowMessage('Não foi possível abrir o banco de dados.');
+           Application.Terminate;
+       end;
+end;
+
+
+end.
